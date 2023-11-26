@@ -31,7 +31,7 @@ public class PersonController {
 	@Autowired
 	private PersonServices service;
 
-	//findAll();;
+	//findAll();
 	
 	@GetMapping(
 		produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
