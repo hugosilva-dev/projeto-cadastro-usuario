@@ -1,8 +1,7 @@
 package br.com.erudio.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -11,9 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
-@Table
+@Table(name = "books")
 public class Book implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,16 +23,17 @@ public class Book implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 180)
 	private String author;
 	
 	@Column(nullable = false)
-	private LocalDate launchDate;
+	@Temporal(TemporalType.DATE)
+	private Date launchDate;
 	
 	@Column(nullable = false)
-	private BigDecimal price;
+	private double price;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, length = 250)
 	private String title;
 	
 	public Book() {}
@@ -52,19 +54,19 @@ public class Book implements Serializable {
 		this.author = author;
 	}
 
-	public LocalDate getLaunchDate() {
+	public Date getLaunchDate() {
 		return launchDate;
 	}
 
-	public void setLaunchDate(LocalDate launchDate) {
+	public void setLaunchDate(Date launchDate) {
 		this.launchDate = launchDate;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

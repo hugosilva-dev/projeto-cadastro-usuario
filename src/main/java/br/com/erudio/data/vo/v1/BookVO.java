@@ -1,8 +1,7 @@
 package br.com.erudio.data.vo.v1;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
@@ -20,8 +19,8 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 	@Mapping("id")
 	private Long key;
 	private String author;
-	private LocalDate launchDate;
-	private BigDecimal price;
+	private Date launchDate;
+	private double price;
 	private String title;
 	
 	public BookVO() {}
@@ -41,20 +40,20 @@ public class BookVO extends RepresentationModel<BookVO> implements Serializable{
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-
-	public LocalDate getLaunchDate() {
+	
+	public Date getLaunchDate() {
 		return launchDate;
 	}
 
-	public void setLaunchDate(LocalDate launchDate) {
+	public void setLaunchDate(Date launchDate) {
 		this.launchDate = launchDate;
 	}
 
-	public BigDecimal getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

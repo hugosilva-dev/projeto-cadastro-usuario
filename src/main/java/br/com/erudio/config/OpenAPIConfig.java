@@ -11,7 +11,7 @@ import io.swagger.v3.oas.models.info.License;
 public class OpenAPIConfig {
 
 	@Bean //anota um método com Bean para que ele seja geranciado pelo Spring IoC Containner
-	public OpenAPI customOpenAPI() {
+	OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.info(new Info()
 					.title("RESTful API with Java 17 and Spring Boot 3")

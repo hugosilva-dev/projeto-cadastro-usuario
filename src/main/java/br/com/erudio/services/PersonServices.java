@@ -28,14 +28,14 @@ public class PersonServices {
 
 		logger.info("Finding all people!");
 
-		List<PersonVO> persons = DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
-		for (PersonVO personVO : persons) {
-			personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
-		}
-	//	persons
-	//		.stream()
-	//		.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel()));
-		return persons;
+		var people = DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
+//		for (PersonVO personVO : people) {
+//			personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getKey())).withSelfRel());
+//		}
+		people
+			.stream()
+			.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+		return people;
 		
 	}
 

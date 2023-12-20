@@ -19,141 +19,141 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.erudio.data.vo.v1.PersonVO;
+import br.com.erudio.data.vo.v1.BookVO;
 import br.com.erudio.exceptions.RequiredObjectIsNullException;
-import br.com.erudio.model.Person;
-import br.com.erudio.repositories.PersonRepository;
-import br.com.erudio.services.PersonServices;
-import br.com.erudio.unittests.mapper.mocks.MockPerson;
+import br.com.erudio.model.Book;
+import br.com.erudio.repositories.BookRepository;
+import br.com.erudio.services.BookServices;
+import br.com.erudio.unittests.mapper.mocks.MockBook;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-class PersonServicesTest {
-
-	MockPerson input;
-
+public class BookServicesTest {
+	
+	MockBook input;
+	
 	@InjectMocks
-	private PersonServices service;
-
+	private BookServices service;
+	
 	@Mock
-	PersonRepository repository;
-
+	BookRepository repository;
+	
 	@BeforeEach
 	void setUpMocks() throws Exception {
-		input = new MockPerson();
+		input = new MockBook();
 		MockitoAnnotations.openMocks(this);
 	}
-
-	void asserts(PersonVO result, int number) {
+	
+	void asserts(BookVO result, int number) {
 		assertNotNull(result);
 		assertNotNull(result.getKey());
 		assertNotNull(result.getLinks());
-
-		assertTrue(result.toString().contains("links: [</api/person/v1/" + number + ">;rel=\"self\"]"));
-		assertEquals("Addres Test" + number, result.getAddress());
-		assertEquals("First Name Test" + number, result.getFirstName());
-		assertEquals("Last Name Test" + number, result.getLastName());
-		assertEquals(((number % 2) == 0) ? "Male" : "Female", result.getGender());
+		
+		assertTrue(result.toString().contains("links: [</api/book/v1/" + number + ">;rel=\"self\"]"));
+		assertEquals("Some Author" + number, result.getAuthor());
+		assertEquals("Some Title" + number, result.getTitle());
+		assertEquals(25D, result.getPrice());
+		assertNotNull(result.getLaunchDate());
 	}
-
+	
 	@Test
 	void testFindById() {
-		Person entity = input.mockEntity(1);
+		Book entity = input.mockEntity(1); 
 		entity.setId(1L);
-
+		
 		when(repository.findById(1L)).thenReturn(Optional.of(entity));
-
+		
 		var result = service.findById(1L);
-		asserts(result, 1);
+		asserts(result,1);
 	}
-
+	
 	@Test
 	void testCreate() {
-		Person entity = input.mockEntity(1);
-
-		Person persisted = entity;
+		Book entity = input.mockEntity(1); 
+		entity.setId(1L);
+		
+		Book persisted = entity;
 		persisted.setId(1L);
-
-		PersonVO vo = input.mockVO(1);
+		
+		BookVO vo = input.mockVO(1);
 		vo.setKey(1L);
-
+		
 		when(repository.save(entity)).thenReturn(persisted);
-
+		
 		var result = service.create(vo);
-		asserts(result, 1);
+		asserts(result,1);
 	}
-
+	
 	@Test
-	void testCreateWithNullPerson() {
-
+	void testCreateWithNullBook() {
 		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
 			service.create(null);
 		});
-
+		
 		String expectedMessage = "It is not allowed to persist a null object!";
 		String actualMessage = exception.getMessage();
-
+		
 		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	@Test
 	void testUpdate() {
-		Person entity = input.mockEntity(1);
-
-		Person persisted = entity;
+		Book entity = input.mockEntity(1); 
+		
+		Book persisted = entity;
 		persisted.setId(1L);
-
-		PersonVO vo = input.mockVO(1);
+		
+		BookVO vo = input.mockVO(1);
 		vo.setKey(1L);
+		
 
 		when(repository.findById(1L)).thenReturn(Optional.of(entity));
 		when(repository.save(entity)).thenReturn(persisted);
-
+		
 		var result = service.update(vo);
-		asserts(result, 1);
+		asserts(result,1);
 	}
-
+	
 	@Test
-	void testUpdateWithNullPerson() {
-
+	void testUpdateWithNullBook() {
 		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
 			service.update(null);
 		});
-
+		
 		String expectedMessage = "It is not allowed to persist a null object!";
 		String actualMessage = exception.getMessage();
-
+		
 		assertTrue(actualMessage.contains(expectedMessage));
 	}
-
+	
 	@Test
 	void testDelete() {
-		Person entity = input.mockEntity(1);
+		Book entity = input.mockEntity(1); 
 		entity.setId(1L);
-
+		
 		when(repository.findById(1L)).thenReturn(Optional.of(entity));
+		
 		service.delete(1L);
 	}
-
+	
 	@Test
 	void testFindAll() {
-		List<Person> list = input.mockEntityList();
-
+		List<Book> list = input.mockEntityList(); 
+		
 		when(repository.findAll()).thenReturn(list);
-
-		var people = service.findAll();
-
-		assertNotNull(people);
-		assertEquals(14, people.size());
-
-		var personOne = people.get(1);
-		asserts(personOne, 1);
 		
-		var personFour = people.get(4);
-		asserts(personFour, 4);
+		var book = service.findAll();
 		
-		var personSeven = people.get(7);
-		asserts(personSeven, 7);
+		assertNotNull(book);
+		assertEquals(14, book.size());
+		
+		var bookOne = book.get(1);
+		asserts(bookOne,1);
+		
+		var bookFour = book.get(4);
+		asserts(bookFour,4);
+		
+		var bookSeven = book.get(7);
+		asserts(bookSeven,7);
 	}
-
 }
